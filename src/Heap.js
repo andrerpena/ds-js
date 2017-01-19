@@ -10,54 +10,42 @@ function Heap(type) {
  * @returns
  */
 Heap.prototype.getLeftChildIndex = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return 2 * index + 1;
 }
 
 Heap.prototype.getRightChildIndex = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return 2 * index + 2;
 }
 
 Heap.prototype.getParentIndex = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return Math.floor((index - 1) / 2);
 }
 
 Heap.prototype.hasLeftChild = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return this.getLeftChildIndex(index) < this.items.length;
 }
 
 Heap.prototype.hasRightChild = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return this.getRightChildIndex(index) < this.items.length;
 }
 
 Heap.prototype.hasParent = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
     return this.getParentIndex(index) >= 0;
 }
 
 Heap.prototype.getLeftChild = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
-    return this.hasLeftChild(index) ? this.items[this.getLeftChildIndex()] : null;
+    return this.hasLeftChild(index) ? this.items[this.getLeftChildIndex(index)] : null;
 }
 
 Heap.prototype.getRightChild = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
-    return this.hasRightChild(index) ? this.items[this.getRightChildIndex()] : null;
+    return this.hasRightChild(index) ? this.items[this.getRightChildIndex(index)] : null;
 }
 
 Heap.prototype.getParent = function (index) {
-    if (!index) throw Error('Argument \'index\' should be truthy');
-    return this.hasParent(index) ? this.items[this.getParentIndex()] : null;
+    return this.hasParent(index) ? this.items[this.getParentIndex(index)] : null;
 }
 
 Heap.prototype.swap = function (index1, index2) {
-    if (!index1) throw Error('Argument \'index1\' should be truthy');
-    if (!index2) throw Error('Argument \'index2\' should be truthy');
-
     var index1Value = this.items[index1];
     this.items[index1] = this.items[index2];
     this.items[index2] = index1Value;
@@ -68,18 +56,28 @@ Heap.prototype.getPeek = function () {
 }
 
 Heap.prototype.poll = function () {
-    var item = this.getPeek();
-    if (item == null)
+    if (!this.items.length)
         return null;
-    this.items[0] = this.items[this.items.length - 1];
-    this.heapifyDown();
+    var item = this.items.splice(0, 1)[0];
+    if (this.items.length) {
+        var lastItem = this.items.splice(this.items.length - 1, 1)[0];
+        this.items.splice(0, 0, lastItem);
+        this.heapifyDown();
+    }
     return item;
 }
 
 Heap.prototype.add = function (item) {
     if (!item) throw Error('Argument \'item\' should be truthy');
-    this.items.push(item);
-    this.heapifyUp();
+    if (item instanceof Array) {
+        for (var i = 0; i < item.length; i++) {
+            this.add(item[i]);
+        }
+    }
+    else {
+        this.items.push(item);
+        this.heapifyUp();
+    }
 }
 
 Heap.prototype.heapifyUp = function () {
@@ -90,14 +88,14 @@ Heap.prototype.heapifyUp = function () {
 
     // function to return whether or not to swap up depending on the type of the heap
     var shouldSwapUp = function (index) {
-        var parentPredicate = _this.type == 0
-            ? this.getParent(index) < this.items[index]  // if it's a 'min heap', we should swap up if the parent is smaller
-            : this.getParent(index) > this.items[index]; // if it's a 'max heap', we should swap up if the parent is bigger
-        return this.hasParent(index) && parentPredicate;
+        var shouldSwap = _this.type == 0
+            ? _this.getParent(index) > _this.items[index]  // if it's a 'min heap', we should swap up if the parent is smaller
+            : _this.getParent(index) < _this.items[index]; // if it's a 'max heap', we should swap up if the parent is bigger
+        return _this.hasParent(index) && shouldSwap;
     }
 
     while (shouldSwapUp(index)) {
-        this.swap(index, this.getParent(index));
+        this.swap(index, this.getParentIndex(index));
         index = this.getParentIndex(index); // walk upwards
     }
 }
@@ -112,17 +110,17 @@ Heap.prototype.heapifyDown = function () {
     var pickBestChildIndexToSwap = function () {
         var targetChildIndex = _this.getLeftChildIndex(index);
         var shouldPickTheRightChild = _this.type == 0
-            ? this.getRightChild(index) < this.getLeftChild(index)  // if it's a 'min heap', we should pick the right child if it's smaller than the right
-            : this.getRightChild(index) > this.getLeftChild(index); // if it's a 'max heap', we should pick the right child if it's bigger than the left
-        if (this.hasRightChild(index) && shouldPickTheRightChild)
-            targetChildIndex = this.getRightChildIndex(index);
+            ? _this.getRightChild(index) < _this.getLeftChild(index)  // if it's a 'min heap', we should pick the right child if it's smaller than the right
+            : _this.getRightChild(index) > _this.getLeftChild(index); // if it's a 'max heap', we should pick the right child if it's bigger than the left
+        if (_this.hasRightChild(index) && shouldPickTheRightChild)
+            targetChildIndex = _this.getRightChildIndex(index);
         return targetChildIndex;
     }
 
     var shouldSwapDown = function (childIndex) {
         return _this.type == 0
-            ? this.items[index] > this.items[childIndex]
-            : this.items[index] < this.items[childIndex]
+            ? _this.items[index] > _this.items[childIndex]
+            : _this.items[index] < _this.items[childIndex]
     }
 
     while (this.hasLeftChild(index)) {
