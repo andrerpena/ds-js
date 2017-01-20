@@ -4,11 +4,14 @@ function Heap(type) {
     this.items = [];
 }
 
-/**
- * Returns the left child index based on the given parent index 
- * @param {any} parentIndex
- * @returns
- */
+Heap.prototype.toString = function () {
+    return this.items.toString();
+}
+
+Heap.prototype.getLength = function () {
+    return this.items.length;
+}
+
 Heap.prototype.getLeftChildIndex = function (index) {
     return 2 * index + 1;
 }
@@ -68,7 +71,7 @@ Heap.prototype.poll = function () {
 }
 
 Heap.prototype.add = function (item) {
-    if (!item) throw Error('Argument \'item\' should be truthy');
+    if (item === undefined || item === null) throw Error('Argument \'item\' should be truthy');
     if (item instanceof Array) {
         for (var i = 0; i < item.length; i++) {
             this.add(item[i]);
@@ -89,8 +92,10 @@ Heap.prototype.heapifyUp = function () {
     // function to return whether or not to swap up depending on the type of the heap
     var shouldSwapUp = function (index) {
         var shouldSwap = _this.type == 0
-            ? _this.getParent(index) > _this.items[index]  // if it's a 'min heap', we should swap up if the parent is smaller
-            : _this.getParent(index) < _this.items[index]; // if it's a 'max heap', we should swap up if the parent is bigger
+            // if it's a 'min heap', we should swap up if the parent is smaller
+            ? _this.getParent(index) > _this.items[index]
+            // if it's a 'max heap', we should swap up if the parent is bigger 
+            : _this.getParent(index) < _this.items[index];
         return _this.hasParent(index) && shouldSwap;
     }
 
@@ -106,12 +111,13 @@ Heap.prototype.heapifyDown = function () {
     var _this = this;
     var index = 0;
 
-
     var pickBestChildIndexToSwap = function () {
         var targetChildIndex = _this.getLeftChildIndex(index);
         var shouldPickTheRightChild = _this.type == 0
-            ? _this.getRightChild(index) < _this.getLeftChild(index)  // if it's a 'min heap', we should pick the right child if it's smaller than the right
-            : _this.getRightChild(index) > _this.getLeftChild(index); // if it's a 'max heap', we should pick the right child if it's bigger than the left
+            // if it's a 'min heap', we should pick the right child if it's smaller than the right
+            ? _this.getRightChild(index) < _this.getLeftChild(index)
+            // if it's a 'max heap', we should pick the right child if it's bigger than the left 
+            : _this.getRightChild(index) > _this.getLeftChild(index);
         if (_this.hasRightChild(index) && shouldPickTheRightChild)
             targetChildIndex = _this.getRightChildIndex(index);
         return targetChildIndex;
