@@ -4,7 +4,7 @@
   "description": "Data structures in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/*Spec.js",
+    "test": "mocha ./test/*Spec.js --slow 0 --timeout 30000",
     "test-debug": "mocha ./test/*Spec.js --debug-brk"
   },
   "repository": {
