@@ -141,4 +141,4 @@ Heap.prototype.heapifyDown = function () {
     }
 }
 
-module.exports = Heap;
+module.exports.Heap = Heap;

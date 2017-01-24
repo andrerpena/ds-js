@@ -1,5 +1,5 @@
 var assert = require('chai').assert;
-var Heap = require('../src/Heap');
+var Heap = require('../src/ds/Heap').Heap;
 
 describe('Heap', function () {
     it('Min heap', function () {
