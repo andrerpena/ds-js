@@ -22,8 +22,8 @@ function getRandomArray(length, max) {
  */
 function generateSortedArray(length, asc) {
     var result = [];
-    if(asc || asc === undefined) for(var i = 0; i < length; i++) result.push(i);
-    else for(var i = length - 1; i >= 0; i--) result.push(i);
+    if (asc || asc === undefined) for (var i = 0; i < length; i++) result.push(i);
+    else for (var i = length - 1; i >= 0; i--) result.push(i);
     return result;
 }
 
@@ -73,7 +73,7 @@ function testRandomArray(sortFunction, size) {
     var array = getRandomArray(size, size);
     // clone the array so we can sort it. We have to clone in order to detect if the sorting algorithm is damaging the original
     var arrayClone = array.concat();
-    sortFunction(arrayClone);
+    arrayClone = sortFunction(arrayClone);
     assert.isTrue(isArraySorted(arrayClone));
     assert.isTrue(areArraysTheSame(array.sort(function (a, b) { return a - b }), arrayClone));
 }
@@ -89,7 +89,7 @@ function testArray(sortFunction, array) {
 
     // clone the array so we can sort it. We have to clone in order to detect if the sorting algorithm is damaging the original
     var arrayClone = array.concat();
-    sortFunction(arrayClone);
+    arrayClone = sortFunction(arrayClone);
     assert.isTrue(isArraySorted(arrayClone));
     assert.isTrue(areArraysTheSame(array.sort(function (a, b) { return a - b }), arrayClone));
 }
@@ -122,5 +122,11 @@ describe('sorter', function () {
     });
     describe('quicksort', function () {
         runSortingTestSuite(sorter.quickSort);
+    });
+    describe('mergesort', function () {
+        runSortingTestSuite(sorter.mergeSort);
+    })
+    describe('default Node.js Array sort function', function () {
+        runSortingTestSuite(function (array) { return array.sort(function (a, b) { return a - b }) });
     });
 });;

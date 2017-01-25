@@ -38,6 +38,7 @@ module.exports = {
             if (swaps === 0)
                 break;
         }
+        return array;
     },
 
     quickSort: function (array) {
@@ -83,11 +84,39 @@ module.exports = {
         }
 
         qs(array, 0, array.length - 1);
+        return array;
     },
 
     mergeSort: function (array) {
         if (!array) throw Error('Argument \'array\' should be truthy');
-        return array;
+
+        function ms(a) {
+            if (!a) throw Error('Argument \'a\' should be truthy');
+            if (a.length == 1)
+                return a;
+
+            var midPoint = Math.floor(a.length / 2);
+            var firstHalf = ms(a.slice(0, midPoint));
+            var secondHalf = ms(a.slice(midPoint, a.length));
+
+            var i = 0; // first half interator
+            var j = 0; // second half interator
+
+            for (var z = 0; z < a.length; z++) {
+                // if we're still running the 2 halves
+                if ((i < firstHalf.length && firstHalf[i] <= secondHalf[j]) || (j >= secondHalf.length)) {
+                    a[z] = firstHalf[i];
+                    i++;
+                }
+                else if ((j < secondHalf.length && secondHalf[j] <= firstHalf[i]) || (i >= firstHalf.length)) {
+                    a[z] = secondHalf[j];
+                    j++;
+                }
+            }
+            return a;
+        }
+
+        return ms(array);
     },
 
     heapSort: function (array) {
