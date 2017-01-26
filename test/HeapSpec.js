@@ -41,4 +41,4 @@ describe('Heap', function () {
         assert.isNull(minHeap.getPeek()); // peek should be null because there's no element
         assert.isNull(minHeap.poll()); // poll should return null because there's no element
     });
-});;
+});

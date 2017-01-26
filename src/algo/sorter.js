@@ -128,4 +128,4 @@ module.exports = {
         if (!array) throw Error('Argument \'array\' should be truthy');
         return array;
     }
-}
+};

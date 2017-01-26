@@ -1,7 +1,8 @@
-module.exports = {
+{
     "env": {
         "browser": true,
-        "commonjs": true
+        "commonjs": true,
+        "mocha": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -22,4 +23,4 @@ module.exports = {
             "always"
         ]
     }
-};
+}

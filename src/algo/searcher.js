@@ -15,7 +15,7 @@ function binarySearch(sortedArray, search, lo, hi) {
     }
     else {
         // we should search the second half
-        return binarySearch(sortedArray, search, midPoint + 1, hi)
+        return binarySearch(sortedArray, search, midPoint + 1, hi);
     }
 }
 
@@ -39,11 +39,11 @@ function binarySearchComparer(sortedArray, comparer, lo, hi) {
     }
     else {
         // we should search the second half
-        return binarySearchComparer(sortedArray, comparer, midPoint + 1, hi)
+        return binarySearchComparer(sortedArray, comparer, midPoint + 1, hi);
     }
 }
 
 module.exports = {
     binarySearch: binarySearch,
     binarySearchComparer: binarySearchComparer
-}
+};
