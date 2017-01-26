@@ -11,7 +11,7 @@ TrieNode.prototype.find = function (c) {
     if (c in this.children)
         return this.children[c];
     return null;
-}
+};
 
 /**
  * Adds a child key to the TrieNode
@@ -28,7 +28,7 @@ TrieNode.prototype.add = function (c, isCompleteWord) {
         node = this.children[c] = new TrieNode(c, isCompleteWord);
     }
     return node;
-}
+};
 
 /**
  * Returns an array with all child TrieNodes
@@ -39,7 +39,7 @@ TrieNode.prototype.getChildren = function () {
     for (var key in this.children)
         result.push(this.children[key]);
     return result;
-}
+};
 
 // Trie
 function Trie() {
@@ -53,13 +53,12 @@ function Trie() {
  */
 Trie.prototype.addWord = function (word) {
     if (!word) throw Error('Argument \'word\' should be truthy');
-    var characters = word.split('');
     var currentNode = this.rootNode;
     for (var i = 0; i < word.length; i++) {
         currentNode = currentNode.add(word[i], i == (word.length - 1));
     }
     return currentNode;
-}
+};
 
 /**
  * Finds the given word. Returns a TrieNode if the word is found. Otherwise, returns null.
@@ -79,7 +78,7 @@ Trie.prototype.findWord = function (word, completeWord) {
     if (completeWord && !currentNode.isCompleteWord)
         return null;
     return currentNode;
-}
+};
 
 
 /**
@@ -95,7 +94,7 @@ Trie.prototype.countWords = function (rootNode) {
         result += this.countWords(childNodes[i]);
     }
     return result;
-}
+};
 
 module.exports.Trie = Trie;
 module.exports.TrieNode = TrieNode;

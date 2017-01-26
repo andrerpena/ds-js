@@ -6,57 +6,57 @@ function Heap(type) {
 
 Heap.prototype.toString = function () {
     return this.items.toString();
-}
+};
 
 Heap.prototype.getLength = function () {
     return this.items.length;
-}
+};
 
 Heap.prototype.getLeftChildIndex = function (index) {
     return 2 * index + 1;
-}
+};
 
 Heap.prototype.getRightChildIndex = function (index) {
     return 2 * index + 2;
-}
+};
 
 Heap.prototype.getParentIndex = function (index) {
     return Math.floor((index - 1) / 2);
-}
+};
 
 Heap.prototype.hasLeftChild = function (index) {
     return this.getLeftChildIndex(index) < this.items.length;
-}
+};
 
 Heap.prototype.hasRightChild = function (index) {
     return this.getRightChildIndex(index) < this.items.length;
-}
+};
 
 Heap.prototype.hasParent = function (index) {
     return this.getParentIndex(index) >= 0;
-}
+};
 
 Heap.prototype.getLeftChild = function (index) {
     return this.hasLeftChild(index) ? this.items[this.getLeftChildIndex(index)] : null;
-}
+};
 
 Heap.prototype.getRightChild = function (index) {
     return this.hasRightChild(index) ? this.items[this.getRightChildIndex(index)] : null;
-}
+};
 
 Heap.prototype.getParent = function (index) {
     return this.hasParent(index) ? this.items[this.getParentIndex(index)] : null;
-}
+};
 
 Heap.prototype.swap = function (index1, index2) {
     var index1Value = this.items[index1];
     this.items[index1] = this.items[index2];
     this.items[index2] = index1Value;
-}
+};
 
 Heap.prototype.getPeek = function () {
     return this.items.length ? this.items[0] : null;
-}
+};
 
 Heap.prototype.poll = function () {
     if (!this.items.length)
@@ -68,7 +68,7 @@ Heap.prototype.poll = function () {
         this.heapifyDown();
     }
     return item;
-}
+};
 
 Heap.prototype.add = function (item) {
     if (item === undefined || item === null) throw Error('Argument \'item\' should be truthy');
@@ -81,7 +81,7 @@ Heap.prototype.add = function (item) {
         this.items.push(item);
         this.heapifyUp();
     }
-}
+};
 
 Heap.prototype.heapifyUp = function () {
     if (!this.items.length)
@@ -97,13 +97,13 @@ Heap.prototype.heapifyUp = function () {
             // if it's a 'max heap', we should swap up if the parent is bigger 
             : _this.getParent(index) < _this.items[index];
         return _this.hasParent(index) && shouldSwap;
-    }
+    };
 
     while (shouldSwapUp(index)) {
         this.swap(index, this.getParentIndex(index));
         index = this.getParentIndex(index); // walk upwards
     }
-}
+};
 
 Heap.prototype.heapifyDown = function () {
     if (!this.items.length)
@@ -121,13 +121,13 @@ Heap.prototype.heapifyDown = function () {
         if (_this.hasRightChild(index) && shouldPickTheRightChild)
             targetChildIndex = _this.getRightChildIndex(index);
         return targetChildIndex;
-    }
+    };
 
     var shouldSwapDown = function (childIndex) {
         return _this.type == 0
             ? _this.items[index] > _this.items[childIndex]
-            : _this.items[index] < _this.items[childIndex]
-    }
+            : _this.items[index] < _this.items[childIndex];
+    };
 
     while (this.hasLeftChild(index)) {
         var targetChildIndex = pickBestChildIndexToSwap();
@@ -139,6 +139,6 @@ Heap.prototype.heapifyDown = function () {
         }
         index = targetChildIndex;
     }
-}
+};
 
 module.exports.Heap = Heap;
